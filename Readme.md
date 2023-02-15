@@ -14,7 +14,6 @@ Broker is responsible for delivering messages from one destination to another eq
 
 first it takes msg from publisher and then gives it to exchange which then gives it again tells broker to deliver it further to some destination
 
-
 Producers/Publisher
 
 Subscribers
@@ -29,7 +28,6 @@ Exchanges then distribute message copies to *queues* using rules called  *bindin
 
 AMQP 0-9-1 is a programmable protocol in the sense that AMQP 0-9-1 entities and routing schemes are primarily defined by applications themselves, not a broker administrator. Accordingly, provision is made for protocol operations that declare queues and exchanges, define bindings between them, subscribe to [queues](https://www.rabbitmq.com/queues.html) and so on.
 
-
 ## Exchange
 
 *Exchanges* are AMQP 0-9-1 entities where messages are sent to. Exchanges take a message and route it into zero or more queues. The routing algorithm used depends on the *exchange type* and rules called  *bindings* . AMQP 0-9-1 brokers provide four exchange types:
@@ -40,7 +38,6 @@ AMQP 0-9-1 is a programmable protocol in the sense that AMQP 0-9-1 entities and 
 | Fanout exchange  | amq.fanout                              |
 | Topic exchange   | amq.topic                               |
 | Headers exchange | amq.match (and amq.headers in RabbitMQ) |
-
 
 Exchanges can be durable or transient. Durable exchanges survive broker restart whereas transient exchanges do not (they have to be redeclared when broker comes back online). Not all scenarios and use cases require exchanges to be durable.
 
@@ -81,13 +78,11 @@ Topic exchanges route messages to one or many queues based on matching between a
 
 A headers exchange is designed for routing on multiple attributes that are more easily expressed as message headers than a routing key. Headers exchanges ignore the routing key attribute. Instead, the attributes used for routing are taken from the headers attribute. A message is considered matching if the value of the header equals the value specified upon binding.
 
-
 It is possible to bind a queue to a headers exchange using more than one header for matching. In this case, the broker needs one more piece of information from the application developer, namely, should it consider messages with any of the headers matching, or all of them? This is what the "x-match" binding argument is for. When the "x-match" argument is set to "any", just one matching header value is sufficient. Alternatively, setting "x-match" to "all" mandates that all the values must match.
 
 For "any" and "all", headers beginning with the string **x-** will not be used to evaluate matches. Setting "x-match" to "any-with-x" or "all-with-x" will also use headers beginning with the string **x-** to evaluate matches.
 
 Headers exchanges can be looked upon as "direct exchanges on steroids". Because they route based on header values, they can be used as direct exchanges where the routing key does not have to be a string; it could be an integer or a hash (dictionary) for example.
-
 
 ## Queues
 
@@ -114,7 +109,6 @@ Each consumer (subscription) has an identifier called a  *consumer tag* . It can
 
 AMQP 0-9-1 is structured as a number of  *methods* . Methods are operations (like HTTP methods) and have nothing in common with methods in object-oriented programming languages. Protocol methods in AMQP 0-9-1 are grouped into  *classes* . Classes are just logical groupings of AMQP methods. The [AMQP 0-9-1 reference](https://www.rabbitmq.com/amqp-0-9-1-reference.html) has full details of all the AMQP methods.
 
-
 Let us take a look at the *exchange* class, a group of methods related to operations on exchanges. It includes the following operations:
 
 * **exchange.declare**
@@ -136,16 +130,13 @@ If the operation succeeds, the broker responds with the **exchange.declare-ok** 
 
 **exchange.declare-ok** does not carry any parameters except for the channel number
 
-
 The sequence of events is very similar for another method pair on the AMQP 0-9-1 *queue* method class: **queue.declare** and **queue.declare-ok**:
 
     ![queue.declare](https://www.rabbitmq.com/img/tutorials/intro/queue-declare.png)
 
     ![queue.declare-ok](https://www.rabbitmq.com/img/tutorials/intro/queue-declare-ok.png)
 
-
 #### Not all AMQP 0-9-1 methods have counterparts. Some (**basic.publish** being the most widely used one) do not have corresponding "response" methods and some others (**basic.get**, for example) have more than one possible "response".
-
 
 ## Connections
 
@@ -153,9 +144,7 @@ AMQP 0-9-1 connections are typically long-lived. AMQP 0-9-1 is an application le
 
 Basically close layered connection over tcp not the base tcp when you want to close a pub sub connection.
 
-
 ## Channels
-
 
 Some applications need multiple connections to the broker. However, it is undesirable to keep many TCP connections open at the same time because doing so consumes system resources and makes it more difficult to configure firewalls. AMQP 0-9-1 connections are multiplexed with *[channels](https://www.rabbitmq.com/channels.html)* that can be thought of as "lightweight connections that share a single TCP connection".
 
@@ -165,13 +154,11 @@ A channel only exists in the context of a connection and never on its own. When 
 
 For applications that use multiple threads/processes for processing, it is very common to open a new channel per thread/process and not share channels between them.
 
-
 # FUN Part 🔥 : lesssggoooooo
 
 ### Installation
 
 Follow this [guide](https://www.rabbitmq.com/download.html) for installation as per your system
-
 
 ### MacOS
 
@@ -179,7 +166,7 @@ Verify Installation:
 
 ![1676480932294](image/Readme/1676480932294.png)
 
-start server: 
+start server:
 
 ```
 brew services start rabbitmq
@@ -193,15 +180,13 @@ similarly for stopping
 brew services stop rabbitmq
 ```
 
-
 On Apple Silicon Macs, [RabbitMQ configuration file](https://www.rabbitmq.com/configure.html#configuration-files) located at **/opt/homebrew/etc/rabbitmq/rabbitmq.conf**. The file does not exist by default and can be created.
 
-#### append path 
+#### append path
 
 `vim .zshrc`
 
-then append `export PATH=$PATH:/opt/homebrew/sbin` to file 
-
+then append `export PATH=$PATH:/opt/homebrew/sbin` to file
 
 # Publish-Subscribe(using pika python client)
 
@@ -209,7 +194,7 @@ pika module [docs](https://pypi.org/project/pika/)
 
 we're going to build a simple logging system. It will consist of two programs -- the first will emit log messages and the second will receive and print them.
 
-Create a virtual env : 
+Create a virtual env :
 
 ```bash
 conda create -n yourenvname python=x.x
@@ -231,17 +216,13 @@ the producer can only send messages to an  *exchange* . An exchange is a very si
 
     ![An exchange: The producer can only send messages to an exchange. One side of the exchange receives messages from producers and the other side pushes them to queues.](https://www.rabbitmq.com/img/tutorials/exchanges.png)
 
-
 ## exchanges
 
 List exchanges present:
 
 ![1676482783470](image/Readme/1676482783470.png)
 
-
 # !!! The code snippets are part of a python file so donnot write them on shell, kindly wait and just understand for a while ... 😄!!!
-
-
 
 There are a few exchange types available: **direct**, **topic**, **headers** and **fanout**. We'll focus on the last one -- the fanout. Let's create an exchange of that type, and call it **logs**:
 
@@ -256,7 +237,6 @@ if we donnot declare a exchange name and pass an empty tring then the default ex
 
 ![1676483197155](image/Readme/1676483197155.png)
 
-
 ## temp queues
 
 We want to hear about all log messages, not just a subset of them. We're also interested only in currently flowing messages not in the old ones. To solve that we need two things.
@@ -267,10 +247,7 @@ Firstly, whenever we connect to Rabbit we need a fresh, empty queue. To do it we
 result = channel.queue_declare(queue='')
 ```
 
-
-
 At this point **result.method.queue** contains a random queue name. For example it may look like **amq.gen-JzTY20BRgKO-HjmUJj0wLg**.
-
 
 Secondly, once the consumer connection is closed, the queue should be deleted. There's an **exclusive** flag for that:
 
@@ -278,9 +255,7 @@ Secondly, once the consumer connection is closed, the queue should be deleted. T
 result = channel.queue_declare(queue='', exclusive=True)
 ```
 
-
 ## bindings
-
 
     ![The exchange sends messages to a queue. The relationship between the exchange and a queue is called a binding.](https://www.rabbitmq.com/img/tutorials/bindings.png)
 
@@ -295,7 +270,6 @@ channel.queue_bind(exchange='logs',queue=result.method.queue)
 after establishing the connection we declared the exchange. This step is necessary as publishing to a non-existing exchange is forbidden.
 
 The messages will be lost if no queue is bound to the exchange yet, but that's okay for us; if no consumer is listening yet we can safely discard the message.
-
 
 code for publisher:
 
@@ -316,9 +290,7 @@ print(" [x] Sent %r" % message)
 connection.close()
 ```
 
-
 code for subscriber:
-
 
 ```
 #!/usr/bin/env python
@@ -346,7 +318,6 @@ channel.basic_consume(
 channel.start_consuming()
 ```
 
-
 A callback function is defined to handle incoming messages. In this case, the callback simply prints the received message to the console.
 
 `start_consuming` is called to begin consuming messages from the queue. It enters an infinite loop that listens for incoming messages and invokes the registered callback function for each message received.
@@ -359,6 +330,38 @@ it's important to note that you must call `basic_consume` before calling `start_
 
 ![1676485554687](image/Readme/1676485554687.png)
 
-
-
 h
+
+# Protocol Buffers: Google's data interchange format
+
+![Protocol buffers 使用教學 - 工程師成長指南](https://imgs.search.brave.com/oDwPboDQ17YRB0nkFBKkuqXL4XokdvkyRRBHybC1TQ8/rs:fit:1134:425:1/g:ce/aHR0cHM6Ly9yYXcu/Z2l0aHVidXNlcmNv/bnRlbnQuY29tL01h/cnRpbkh1YW5nMDkz/My9tYXJ0aW5pb3Mt/c291cmNlL21hc3Rl/ci9BcnRpY2xlL2lP/Uy1Qcm90b2NvbEJ1/ZmZlcnMvYmFubmVy/LnBuZw)
+
+### Download
+
+[guide](https://github.com/protocolbuffers/protobuf#protocol-compiler-installation) to complete setup and custom installation
+
+```
+brew install bazel
+```
+
+```
+git clone https://github.com/protocolbuffers/protobuf.git
+cd protobuf
+git submodule update --init --recursive
+```
+
+`bazel build :protoc :protobuf`
+
+![1676492172174](image/Readme/1676492172174.png)
+
+## To compile
+
+`protoc -I=LOCATION_OF_CURR_DIR --python_out=OUTPUT_DIR ./NAME_OF_FILE.proto`
+
+![1676493215315](image/Readme/1676493215315.png)
+
+Before running python code
+
+```
+pip install --upgrade google-api-python-client
+```

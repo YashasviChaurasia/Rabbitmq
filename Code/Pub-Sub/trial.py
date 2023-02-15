@@ -16,3 +16,29 @@
 # topic based exchange for clients
 
 # communication happens in form of protos 
+
+# have separate files for each type of communication via protos
+# for each communication each side should print what they receive.
+
+
+
+
+
+import test_pb2 as tb
+import sys
+
+person= tb.Person()
+person.id = 1234
+person.name = "John Doe"
+person.email = "jdoe@example.com"
+phone = person.phones.add()
+phone.number = "555-4321"
+phone.type = tb.Person.HOME
+#use serialize to get to string
+f=person.SerializeToString()
+print(f)
+p2=tb.Person()
+
+#and this to decode it from string
+u=p2.ParseFromString(f)
+print(p2.name)
