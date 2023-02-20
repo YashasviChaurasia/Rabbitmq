@@ -365,3 +365,28 @@ Before running python code
 ```
 pip install --upgrade google-api-python-client
 ```
+
+In the context of message-oriented middleware systems like RabbitMQ, we can generally say that exchanges are for routing messages between servers, while queues are for buffering messages on the client side.
+
+RPC vs PUB-SUB
+
+RPC (Remote Procedure Call) and pub/sub (publish/subscribe) are two common messaging patterns used in distributed systems like RabbitMQ. Here's a brief comparison between the two:
+
+RPC:
+
+* In an RPC pattern, clients send requests to servers to invoke specific methods or procedures.
+* The client waits for a response from the server before proceeding with its next operation.
+* The response typically contains the result of the operation or an error message if the operation failed.
+* RPC is suitable for scenarios where clients need to invoke specific operations on servers and require a response.
+
+Pub/Sub:
+
+* In a pub/sub pattern, publishers send messages to one or more subscribers without knowing who the subscribers are.
+* Subscribers register to receive messages based on a specific topic or pattern, and the message broker routes messages to matching subscribers.
+* Subscribers receive messages asynchronously and can perform some action based on the content of the message.
+* Pub/sub is suitable for scenarios where clients need to receive notifications or updates from servers or other clients, without requiring a response.
+
+In summary, RPC is a request/response pattern where clients invoke specific operations on servers and wait for a response, while pub/sub is a publish/subscribe pattern where clients receive messages asynchronously based on topics or patterns of interest. The choice between RPC and pub/sub depends on the specific use case and requirements of the system.
+
+
+https://www.rabbitmq.com/tutorials/tutorial-six-python.html
