@@ -1,0 +1,39 @@
+So we have a client and a server and we want them to communicate with each other.
+So the client will send the first message and then the server will receive work on it and then send it back to the client where the client receives and decides what to do next
+so it is important on the client side to do things there.
+
+So client side will be a interactive code 
+
+but for itr 1 we will do a client sends server rcvs and then server sends and client recs and closes.
+we will have two exchanges and two queues for this.
+
+We currently doing a seperate channel rpc test code for now
+
+
+
+So basic RPC thing is working now without threading and stuff and I think I will try rpc with exchanges with routing keys
+then we can build upon it.
+
+Will test sep channel thing in a while when rpc is completed for now doing rpc with exchanges with uuids
+
+simple inf loop rpc also done useless btw.
+
+The structure should be the client should get control after each response again and the server should not always just sit and listen
+
+
+No no the server can wait but it should not always wait for the same guy. after
+each loop the server should listen to the queue but the respond respectively.. okok 
+just uuid thing it is then.
+
+done uuid wali chheeez so now we have exchanges talking to each other with direct exchange based on routing keys=uuids
+
+also only the server has to be multithreaded. ofc ik ik
+
+now we are wokring on resgistry server code and sorting that out.
+no before that we are working on exchanges and checking out multiple channel workflows
+
+so topic based exchange pe kaam in sep files then integrate them later.
+
+Queue name is uuid so it
+different channels are not required for now. may be used in multithreading
+
